@@ -1,11 +1,13 @@
 const express = require('express');
 const config = require('config');
+const axios = require('axios');
 
 const app = express();
 app.use(express.json())
 
 const host = config.get("host");
 const port = config.get("port");
+const airQualityAddress = config.get("air_quality_address");
 
 let airQuality = undefined;
 let targetDetection = undefined;
@@ -34,6 +36,16 @@ app.post('/target-detection', (req, res) => {
     let data = req.body;
     targetDetection = data;
     res.send('Data Received at target-detection: ' + JSON.stringify(data));
+});
+
+app.get('/update-lcd', (req, res) => {
+    let option = req.query.option;
+
+    axios.post(`${airQualityAddress}/lcd-screen`, {
+        display: option,
+    });
+
+    res.send('OK');
 });
 
 app.listen(port, () => {

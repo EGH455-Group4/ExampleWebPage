@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <button onclick="setLCD(`IP_address`)">Set LCD to IP</button>
+    <button onclick="setLCD(`temperature`)">Set LCD to temperature</button>
+    <button onclick="setLCD(`image_processing`)">Set LCD to target_detection</button>
     <div>Current readings</div>
     <div>air-quality data: <span id="air-quality-id"></span></div>
     <div>target-detection data: <span id="target-detection-id"></span></div>
@@ -22,6 +25,9 @@
             const targetData = await fetch("http://127.0.0.1:8080/target-detection").then((res) => res.json());
             document.getElementById("target-detection-id").innerText = JSON.stringify(targetData);
             document.getElementById("target-detection-image").src = targetData.target_detection.location;
+        }
+        async function setLCD(option) {
+            await fetch(`http://127.0.0.1:8080/update-lcd?option=${option}`)
         }
         fillAirQuality();
         fillTargetDetection();
