@@ -4,12 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Hello World Simple App</title>
+    <meta http-equiv="refresh" content="2" />
+    <title>Simple readings</title>
 </head>
 
 <body>
-    <div>Hello World!</div>
+    <div>Current readings</div>
+    <div>air-quality data: <span id="air-quality-id"></span></div>
+    <div>target-detection data: <span id="target-detection-id"></span></div>
+    <div>current image: <img src="" id="target-detection-image" width="800" height="500"></img></div>
+    <script>
+        async function fillAirQuality() {
+            const airData = await fetch("http://127.0.0.1:8080/air-quality").then((res) => res.json());
+            document.getElementById("air-quality-id").innerText = JSON.stringify(airData);
+        }
+        async function fillTargetDetection() {
+            const targetData = await fetch("http://127.0.0.1:8080/target-detection").then((res) => res.json());
+            document.getElementById("target-detection-id").innerText = JSON.stringify(targetData);
+            document.getElementById("target-detection-image").src = targetData.target_detection.location;
+        }
+        fillAirQuality();
+        fillTargetDetection();
+    </script>
 </body>
 
 </html>

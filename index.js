@@ -1,13 +1,41 @@
-const express = require('express'); //Import the express dependency
-const app = express();              //Instantiate an express app, the main work horse of this server
-const port = 5000;                  //Save the port number where your server will be listening
+const express = require('express');
+const config = require('config');
 
-//Idiomatic expression in express to route and respond to a client request
-app.get('/', (req, res) => {        //get requests to the root ("/") will route here
-    res.sendFile('index.html', {root: __dirname});      //server responds by sending the index.html file to the client's browser
-                                                        //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
+const app = express();
+app.use(express.json())
+
+const host = config.get("host");
+const port = config.get("port");
+
+let airQuality = undefined;
+let targetDetection = undefined;
+
+app.get('/', (req, res) => {
+    res.sendFile('index.html', {root: __dirname});
 });
 
-app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
-    console.log(`Now listening on port ${port}`);
+app.get('/air-quality', (req, res) => {
+    const jsonContent = JSON.stringify(airQuality);
+    res.end(jsonContent);
+});
+
+app.post('/air-quality', (req, res) => {
+    let data = req.body;
+    airQuality = data;
+    res.send('Data Received at air-quality: ' + JSON.stringify(data));
+});
+
+app.get('/target-detection', (req, res) => {
+    const jsonContent = JSON.stringify(targetDetection);
+    res.end(jsonContent);
+});
+
+app.post('/target-detection', (req, res) => {
+    let data = req.body;
+    targetDetection = data;
+    res.send('Data Received at target-detection: ' + JSON.stringify(data));
+});
+
+app.listen(port, () => {
+    console.log(`Now listening on: ${host}:${port}`);
 });
