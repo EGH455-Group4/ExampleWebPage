@@ -1,5 +1,5 @@
 {
     "host": "http://127.0.0.1",
     "port": 8080,
-    "air_quality_address": "http://127.0.0.1:8050"
+    "air_quality_address": "http://192.168.0.246:8050"
 }
