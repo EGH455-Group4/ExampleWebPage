@@ -15,7 +15,7 @@
     <div>Current readings</div>
     <div>air-quality data: <span id="air-quality-id"></span></div>
     <div>target-detection data: <span id="target-detection-id"></span></div>
-    <div>current image: <img src="" id="target-detection-image" width="800" height="500"></img></div>
+    <div>current image: <img src="" id="target-detection-image" width="416" height="416"></img></div>
     <script>
         async function fillAirQuality() {
             const airData = await fetch("http://127.0.0.1:8080/air-quality").then((res) => res.json());
